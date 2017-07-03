@@ -1,7 +1,10 @@
 # Spiff-Workflow-Engine
+
+周微博（电子科技大学），田超（傲势科技）
+
 深入调研使用与BPMN兼容的Python工作流引擎Spiff，Ref. https://github.com/knipknap/SpiffWorkflow
 
-## 概述
+## 概述 
 
 ### 工作流引擎
 
