@@ -1,0 +1,65 @@
+# 总结报告
+
+### 关于对各个工作流总结
+
+首先，我对国际上常见的21种工作流模式进行了学习，了解了它们大概的工作方式
+
+1.顺序                                                          2.平行拆分                                            3.同步
+
+4.排他选择                                                  5.单合并                                                6.多选
+
+7.平行合并                                                  8.多合并                                                9.鉴别
+
+10.M中的N模式                                         11.强制循环                                          12.隐式终止
+
+13.异步的多实例                                       14.在设计期间预先确定的多实例        15.在运行期预先确定的多实例
+
+16.无法在运行期预先确定的多实例        17.延迟选择                                           18.交替平行路由
+
+19.里程碑                                                   20.取消活动                                           21.取消实例
+
+但是在这些模式之中，我发现了一些工作流模式之间的概念比较模糊，无法有效的分别出它们之间的一些区别。
+
+例如：“并行模式”、“单选”、“多选”没有实质区别，都是从流程的分支中选择若干个执行。具体选择哪几个是由“转移条件”决定的，如果转移条件计算结果是正确的则执行，否则不执行。因此并行模式只是分支选择模式的一个特例，即所有的转移条件计算结果都是正确的。
+
+于是我又找了一些关于它们之间的资料，想来对这些工作流模式进行有效区分，就不去一一详细解释了。
+
+### 关于对Python工作流引擎SpiffWorkflow的学习总结
+
+首先我先用电脑在python上下载了关于SpiffWorkflow的模块。再对关于SpiffWorkflow的库的说明书进行了学习，了解到了一定的知识。
+
+1. 首先是关于创建一个工作流规范
+
+   可以创建一个关于由两层保险柜装着的文件，每一层只能由一个人打开的工作流规范
+
+   ```python
+   from __future__ import print_function
+   from SpiffWorkflow.specs import WorkflowSpec, ExclusiveChoice, Simple, Cancel
+   from SpiffWorkflow.operators import Equal, Attrib
+
+   def my_nuclear_strike(msg):
+       print("Launched:", msg)
+       
+   class DoubleDeckBox(WorkflowSpec):
+       def __init__(self):
+           WorkflowSpec.__init__(self)
+           peopleA_choice = ExclusiveChoice(self, 'peopleA')
+           self.start.connect(peopleA_choice)
+           cancel = Cancel(self, 'workflow_aborted')
+           peopleA_choice.connect(cancel)
+           peopleB_choice = ExclusiveChoice(self, 'peopleB')
+           cond = Equal(Attrib('confirmation'), 'yes')
+           peopleA_choice.connect_if(cond, peopleB_choice)
+           peopleB_choice.connect(cancel)
+           strike = Simple(self, 'nuclear_strike')
+           peopleB_choice.connect_if(cond, strike)
+           strike.completed_event.connect(my_nuclear_strike)
+   ```
+
+2. 然后，通过对SpiffWorkflow的API Documentation来了解各个类的作用
+
+   在上述例子中的SpiffWorkflow.specs中的ExclusiveChoice类，这个类代表一个独占选择（if条件）任务，精确地  选择一个传出任务。如果没有给定的条件匹配，则选择默认任务。它有一个或多个输入和两个或多个输出。
+
+   在SpiffWorkflow.specs中的Cancel类中，来对类进行申请一个否定的默认值。
+
+   但是在这个程序中的类我并没有完全的了解，吃透，还需要继续努力。
