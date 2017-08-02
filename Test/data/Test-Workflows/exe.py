@@ -1,7 +1,8 @@
 import sys
 import webbrowser
-sys.path.append('libs')
 
-url='http://www.baidu.com'
+
+sys.path.append('libs')
 webbrowser.open(url)
-print('yes')
+result=webbrowser.get()
+

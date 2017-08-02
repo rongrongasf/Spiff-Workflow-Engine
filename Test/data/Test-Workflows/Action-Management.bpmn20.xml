@@ -97,7 +97,7 @@
          </extensionElements>
          <incoming>sid-4B3460BF-1433-4961-BEA6-CD4766A5F509</incoming>
          <outgoing>sid-C06ACF4A-E241-4E40-B283-F35060801420</outgoing>
-         <script>/Users/macbookpro/Desktop/Test/data/Test-Workflows/exe.py</script>
+         <script></script>
       </scriptTask>
       <scriptTask completionQuantity="1" id="sid-2ABC7FB8-98FF-4BE6-8A7F-941CBDEE3232" isForCompensation="false" name="Notify Responsible Person: Action Cancelled" scriptFormat="" startQuantity="1">
          <extensionElements>
